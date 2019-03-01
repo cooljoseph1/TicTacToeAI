@@ -69,7 +69,7 @@ class Game(object):
         return 0
             
     def __str__(self):
-        return (u"\n\u2014\u2014\u2014\u2014\u2014\n").join("|".join(self.convert[self.board[x]] for x in range(i*3, i*3 + 3)) for i in range(3))
+        return (u"\n\u2014 \u2014 \u2014\n").join("|".join(self.convert[self.board[x]] for x in range(i*3, i*3 + 3)) for i in range(3))
     
     
 class Ai(object):
@@ -90,6 +90,7 @@ class TicTacToeAi(Ai):
             for i in range(9):
                 weights[i] += random.random()*2*variation1 - variation1
                 offsets[i] += random.random()*2*variation2 - variation2
+        return self
                 
 
 def cross(ai1, ai2):
@@ -101,7 +102,7 @@ class DefaultAi(Ai):
 
 default_ai = DefaultAi()
 ais = [TicTacToeAi() for i in range(20)]
-for i in range(1):
+for i in range(1000):
     scores = []
     for ai in ais:
         game = Game(ai, default_ai)
@@ -111,10 +112,9 @@ for i in range(1):
     sorted_ais = tuple(zip(*sorted(tuple(zip(ais, scores)), key = lambda x: x[1])))[0]  #sort by scores
     ais = list(sorted_ais[-10:])
     for j in range(10):
-        ais.append(cross(random.choice(ais), random.choice(ais)))
+        ais.append(cross(random.choice(ais), random.choice(ais)).mutate())
 
-    ai1 = ais[10]
-    game = Game(ai1, default_ai)
-    game.play()
-    #print(game)
-    #print()
+ai1 = ais[10]
+game = Game(ai1, default_ai)
+game.play()
+print(game)
