@@ -99,6 +99,10 @@ def cross(ai1, ai2):
 class DefaultAi(Ai):
     def choice(self, board):
         return int(random.random()*9)
+    
+class HumanAi(Ai):
+    def choice(self, board):
+        return int(input())
 
 default_ai = DefaultAi()
 ais = [TicTacToeAi() for i in range(20)]
